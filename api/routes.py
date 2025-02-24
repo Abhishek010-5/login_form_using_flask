@@ -6,7 +6,7 @@ from api.validations.validation_utils import validate_email, validate_password, 
 from api.database import get_database
 from api.utils.reset import reset_password
 from functools import wraps
-from api.app import limiter, app
+from app import limiter, app
 
 
 # Login required decorator
