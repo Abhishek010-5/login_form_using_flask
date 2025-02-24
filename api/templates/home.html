@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome -->
+    <title>My Awesome Website</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            background: linear-gradient(135deg, #003366, #0073e6);
+            padding: 20px;
+            padding-top: 20px;
+        }
+
+        .hero {
+            width: 100%;
+            height: 60vh;
+            background: url('https://via.placeholder.com/1500x900') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #fff;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .hero a {
+            color: #fff;
+            background-color: #0073e6;
+            padding: 12px 30px;
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .hero a:hover {
+            background-color: #005bb5;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        main {
+            padding: 40px 20px;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+            overflow: hidden;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        section {
+            margin-bottom: 40px;
+        }
+
+        section h2 {
+            border-bottom: 3px solid #ff6347;
+            padding-bottom: 10px;
+            color: #003366;
+            font-size: 28px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .cards {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .cards .card {
+            flex: 1;
+            padding: 20px;
+            margin: 15px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            min-width: 250px;
+            max-width: 300px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .cards .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .cards .card i {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: #0073e6;
+        }
+
+        .cards .card p {
+            font-size: 16px;
+            color: #666;
+        }
+
+        footer {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #003366;
+            text-align: center;
+            padding: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            margin-top: 40px;
+        }
+
+        footer p {
+            font-size: 16px;
+        }
+
+        /* Floating Logout Button */
+        .logout-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #ff6347;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 9999; /* Ensure it is on top of other elements */
+        }
+
+        /* Hover effect */
+        .logout-btn:hover {
+            background-color: #e5533d; /* Slightly darker color */
+            transform: scale(1.1); /* Slightly scale the button */
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Larger shadow for more effect */
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                height: auto;
+                padding: 50px 20px;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            .cards {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .cards .card {
+                max-width: 90%;
+                margin: 10px 0;
+            }
+
+            footer p {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Logout Button (Only visible if logged in) -->
+    {% if session['email'] %}
+        <button class="logout-btn" onclick="logout()">Logout</button> 
+    {% endif %}
+
+    <div class="hero">
+        <h1>Welcome to My Awesome Website</h1>
+        <p>Explore the latest updates and features</p>
+        <a href="#about">Learn More</a>
+    </div>
+
+    <main>
+        <section id="about">
+            <h2>About Us</h2>
+            <div class="cards">
+                <div class="card">
+                    <i class="fas fa-rocket"></i>
+                    <p>Learn more about our mission and values.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-users"></i>
+                    <p>Meet the amazing team behind our projects.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-globe"></i>
+                    <p>Explore our global impact and presence.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="services">
+            <h2>Our Services</h2>
+            <div class="cards">
+                <div class="card">
+                    <i class="fas fa-cogs"></i>
+                    <p>Discover the wide range of services we offer.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-cloud"></i>
+                    <p>Innovative cloud solutions for your business.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-mobile-alt"></i>
+                    <p>Custom mobile development for your needs.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2>Contact Us</h2>
+            <div class="cards">
+                <div class="card">
+                    <i class="fas fa-envelope"></i>
+                    <p>Get in touch with us through our contact form or social media.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-phone-alt"></i>
+                    <p>Reach us by phone for immediate support.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <p>Visit us at our office for a personal consultation.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 My Awesome Website. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function logout() {
+            fetch('/logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert("You have been logged out!");
+                    window.location.href = "/index"; // Redirect to login or homepage
+                } else {
+                    alert("Logout failed. Please try again.");
+                }
+            });
+        }
+    </script>
+</body>
+</html>

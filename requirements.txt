@@ -1,0 +1,10 @@
+click==8.1.7
+colorama==0.4.6
+Flask==3.0.0
+Flask-PyMongo==2.3.0
+gunicorn==23.0.0
+pymongo==4.9.1
+python-dotenv==1.0.1
+requests==2.31.0
+Flask-Limiter==2.0.3
+smtplib==0.9

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap" rel="stylesheet">
+    <title>Login/Signup Form</title>
+    <style>
+        /* (CSS styles remain unchanged) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #003366, #0073e6);
+            padding: 20px;
+        }
+
+        .wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+            overflow: hidden;
+        }
+
+        .slide-controls {
+            position: relative;
+            height: 50px;
+            width: 100%;
+            margin-bottom: 20px;
+            background: #f5f5f5;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .slide-controls .slide {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 50%;
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            line-height: 50px;
+            cursor: pointer;
+            z-index: 2;
+            color: #333;
+            transition: color 0.4s ease;
+        }
+
+        .slide-controls .slide.login {
+            left: 0;
+        }
+
+        .slide-controls .slide.signup {
+            right: 0;
+        }
+
+        .slide-controls .slider-tab {
+            position: absolute;
+            height: 100%;
+            width: 50%;
+            left: 0;
+            z-index: 1;
+            border-radius: 25px;
+            background: linear-gradient(135deg, #0059b3, #0073e6);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: left 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .wrapper.signup-active .slide-controls .slider-tab {
+            left: 50%;
+        }
+
+        .wrapper.signup-active .slide-controls .slide.login {
+            color: #666;
+        }
+
+        .wrapper.signup-active .slide-controls .slide.signup {
+            color: #fff;
+        }
+
+        .slide-controls .slide:hover {
+            color: #0073e6;
+        }
+
+        .wrapper:not(.signup-active) .slide-controls .slide.login {
+            color: #fff;
+        }
+
+        .wrapper:not(.signup-active) .slide-controls .slide.signup {
+            color: #666;
+        }
+
+        input[type="radio"] {
+            display: none;
+        }
+
+        .form-container {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .form-inner {
+            display: flex;
+            width: 200%;
+            transition: margin-left 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .wrapper.signup-active .form-inner {
+            margin-left: -100%;
+        }
+
+        .form-inner form {
+            width: 50%;
+            padding: 0 10px;
+        }
+
+        .field {
+            position: relative;
+            height: 50px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .field input {
+            height: 100%;
+            width: 100%;
+            outline: none;
+            padding: 0 15px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            background: #fff;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .field input:focus {
+            border-color: #0073e6;
+            box-shadow: 0 0 8px rgba(0, 115, 230, 0.3);
+        }
+
+        .field input::placeholder {
+            color: #aaa;
+            transition: color 0.3s ease;
+        }
+
+        .field input:focus::placeholder {
+            color: #ccc;
+        }
+
+        .btn {
+            height: 50px;
+            width: 100%;
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            background: #0073e6;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 115, 230, 0.4);
+        }
+
+        .btn input[type="submit"] {
+            height: 100%;
+            width: 100%;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            z-index: 1;
+            position: relative;
+        }
+
+        .forgot {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .forgot a {
+            color: #0073e6;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .forgot a:hover {
+            color: #0059b3;
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 400px) {
+            .wrapper {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .slide-controls .slide {
+                font-size: 16px;
+            }
+
+            .field input {
+                font-size: 14px;
+            }
+
+            .btn input[type="submit"] {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="slide-controls" role="tablist">
+            <input type="radio" name="slide" id="login" checked aria-controls="login-form">
+            <input type="radio" name="slide" id="signup" aria-controls="signup-form">
+            <label for="login" class="slide login" role="tab" aria-selected="true">Login</label>
+            <label for="signup" class="slide signup" role="tab" aria-selected="false">Signup</label>
+            <div class="slider-tab"></div>
+        </div>
+        <div class="form-container">
+            <div class="form-inner">
+                <form class="form-signin" id="login-form" action="#" method="post" name="signinForm" role="tabpanel">
+                    <div class="field">
+                        <input type="text" name="email" placeholder="Email" required aria-label="Email">
+                    </div>
+                    <div class="field">
+                        <input type="password" name="password" placeholder="Password" required aria-label="Password">
+                    </div>
+                    <div class="btn">
+                        <input type="submit" value="Sign In">
+                    </div>
+                    <div class="forgot">
+                        <a href="/forgot_password">Forgot Password?</a>
+                    </div>
+                </form>
+
+                <form class="form-signup" id="signup-form" action="#" method="post" name="signupForm" role="tabpanel" aria-hidden="true">
+                    <div class="field">
+                        <input type="text" name="email" placeholder="Email" required aria-label="Email">
+                    </div>
+                    <div class="field">
+                        <input type="text" name="fullname" placeholder="Full Name" required aria-label="Full Name">
+                    </div>
+                    <div class="field">
+                        <input type="password" name="password" placeholder="Password" required aria-label="Password">
+                    </div>
+                    <div class="field">
+                        <input type="password" name="confirmpassword" placeholder="Confirm Password" required aria-label="Confirm Password">
+                    </div>
+                    <div class="btn">
+                        <input type="submit" value="Sign Up">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const wrapper = document.querySelector(".wrapper");
+        const loginBtn = document.querySelector("label.login");
+        const signupBtn = document.querySelector("label.signup");
+        const loginForm = document.querySelector("#login-form");
+        const signupForm = document.querySelector("#signup-form");
+
+        // Function to update UI based on state
+        function updateUI(isSignup) {
+            if (isSignup) {
+                wrapper.classList.add("signup-active");
+                loginForm.setAttribute("aria-hidden", "true");
+                signupForm.removeAttribute("aria-hidden");
+            } else {
+                wrapper.classList.remove("signup-active");
+                loginForm.removeAttribute("aria-hidden");
+                signupForm.setAttribute("aria-hidden", "true");
+            }
+        }
+
+        // // Event listeners for the slide controls
+        // loginBtn.addEventListener("click", () => updateUI(false));
+        // signupBtn.addEventListener("click", () => updateUI(true));
+
+        // // Handle login form submission
+        // loginForm.addEventListener("submit", async (e) => {
+        //     e.preventDefault();
+        //     const email = loginForm.email.value;
+        //     const password = loginForm.password.value;
+
+        //     try {
+        //         const response = await fetch("/login", {
+        //             method: "POST",
+        //             headers: {
+        //                 "Content-Type": "application/json"
+        //             },
+        //             body: JSON.stringify({ email, password })
+        //         });
+
+        //         const result = await response.json();
+        //         if (response.ok) {
+        //             alert(result.message);
+        //             // Redirect or perform further actions
+        //         } else {
+        //             alert(result.error);
+        //         }
+        //     } catch (error) {
+        //         alert("An error occurred: " + error.message);
+        //     }
+        // });
+
+        // Event listeners for the slide controls
+            loginBtn.addEventListener("click", () => updateUI(false));
+            signupBtn.addEventListener("click", () => updateUI(true));
+
+            // Handle login form submission
+            loginForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const email = loginForm.email.value;
+                const password = loginForm.password.value;
+
+                try {
+                    const response = await fetch("/login", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ email, password })
+                    });
+
+                    // Check if the response is a redirect
+                    if (response.redirected) {
+                        // Redirect to the new location
+                        window.location.href = response.url;
+                    } else {
+                        // Handle the JSON response
+                        const result = await response.json();
+                        if (response.ok) {
+                            alert(result.message);
+                            // Perform further actions if needed
+                        } else {
+                            alert(result.error);
+                        }
+                    }
+                } catch (error) {
+                    alert("An error occurred: " + error.message);
+                }
+            });
+
+
+        // Handle signup form submission
+        signupForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const email = signupForm.email.value;
+            const fullname = signupForm.fullname.value;
+            const password = signupForm.password.value;
+            const confirmPassword = signupForm.confirmpassword.value;
+
+            if (password !== confirmPassword) {
+                alert("Passwords do not match!");
+                return;
+            }
+
+            try {
+                const response = await fetch("/signup", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ email, fullname, password, confirmPassword })
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    alert(result.message);
+                    // Proceed to OTP verification step
+                } else {
+                    alert(result.error);
+                }
+            } catch (error) {
+                alert("An error occurred: " + error.message);
+            }
+        });
+    </script>
+</body>
+</html>
