@@ -15,6 +15,9 @@ limiter = Limiter(
 
 # Enable CSRF protection
 # csrf = CSRFProtect(app)
-from routes import *
+# from routes import *
+@app.route("/")
+def home():
+    return "This is home page"
 # if __name__ == "__main__":
     # app.run()
