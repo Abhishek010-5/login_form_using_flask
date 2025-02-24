@@ -46,6 +46,6 @@ limiter.init_app(app)
 # Enable CSRF protection
 # csrf = CSRFProtect(app)
 
-if __name__ == "__main__":
-    from routes import *
+from routes import *
+# if __name__ == "__main__":
     # app.run()
