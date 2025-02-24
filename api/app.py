@@ -5,9 +5,9 @@ import os
 from dotenv import load_dotenv
 # from flask_wtf.csrf import CSRFProtect
 load_dotenv()
-secrect_key = os.getenv("SECRECT_KEY")
+secret_key = os.getenv("SECRET_KEY")
 app = Flask(__name__)
-app.config['SECRET_KEY'] = secrect_key
+app.config['SECRET_KEY'] = secret_key
 
 
 # Initialize the Limiter with default limits
@@ -19,6 +19,6 @@ limiter = Limiter(
 
 # Enable CSRF protection
 # csrf = CSRFProtect(app)
-from routes import *
-# if __name__ == "__main__":
+if __name__ == "__main__":
+    from routes import *
     # app.run()
