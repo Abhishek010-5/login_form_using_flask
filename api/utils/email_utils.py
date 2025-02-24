@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import os
 from api.database import get_database
 from datetime import datetime, timedelta
-from api.validations.validation_utils import validate_user_mail
+from api.validations.validation_utils import validate_user_otp
 
 load_dotenv()
 password = os.getenv("PASSWORD")
@@ -33,8 +33,8 @@ def send_otp(email, otp):
     message.attach(MIMEText(body, "plain"))
 
     try:
-        server = smtplib.SMTP("127.0.0.1", 1025)  # Use port 1025 for the local SMTP server
-        # server.starttls()  # Remove this line if using a simple local SMTP server without TLS
+        server = smtplib.SMTP("smtp.gmail.com", 587)  # Use port 1025 for the local SMTP server
+        server.starttls()  # Remove this line if using a simple local SMTP server without TLS
         server.login(sender_email, sender_password)
         server.sendmail(sender_email, email, message.as_string())
         server.quit()
@@ -55,11 +55,11 @@ def send_otp_to_db(email, otp):
     db = get_database()
     curr_time = datetime.now()
     new_time = curr_time + timedelta(minutes=10)
-    if not validate_user_mail(email):  # Ensure you pass the email parameter to the validation function
+    if not validate_user_otp(email):  # Ensure you pass the email parameter to the validation function
         document = {"_id": email, "otp": otp, "otp_expiry": new_time}
-        db["opt_verification"].insert_one(document)
+        db["otp_verification"].insert_one(document)
     else:
-        db["opt_verification"].update_one({"_id": email}, {"$set": {"otp": otp, "otp_expiry": new_time}})
+        db["otp_verification"].update_one({"_id": email}, {"$set": {"otp": otp, "otp_expiry": new_time}})
 
 
 
