@@ -1,15 +1,10 @@
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from dotenv import load_dotenv
-import os
 from api.database import get_database
 from datetime import datetime, timedelta
 from api.validations.validation_utils import validate_user_otp
-
-load_dotenv()
-password = os.getenv("PASSWORD")
-mail = os.getenv("MAIL")
+from api.config import PASSWORD, MAIL
 
 def send_otp(email, otp):
     """
@@ -21,8 +16,8 @@ def send_otp(email, otp):
 
     Sends the OTP via email using SMTP.
     """
-    sender_email = mail
-    sender_password = password
+    sender_email = MAIL
+    sender_password = PASSWORD
     subject = "Your OTP Code"
     body = f"Your OTP code is {otp}. It is valid for 10 minutes."
 
