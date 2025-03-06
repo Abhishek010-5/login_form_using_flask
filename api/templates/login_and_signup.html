@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap" rel="stylesheet">
-    <title>Login/Signup Form</title>
+    <title>Login/Signup Form with OTP</title>
     <style>
-        /* (CSS styles remain unchanged) */
         * {
             margin: 0;
             padding: 0;
@@ -26,7 +25,7 @@
         .wrapper {
             position: relative;
             width: 100%;
-            max-width: 400px;
+            max-width: 360px; /* Already reduced from 400px */
             background: rgba(255, 255, 255, 0.95);
             padding: 30px;
             border-radius: 20px;
@@ -39,7 +38,7 @@
             position: relative;
             height: 50px;
             width: 100%;
-            margin-bottom: 20px;
+            margin-bottom: 15px; /* Reduced from 20px */
             background: #f5f5f5;
             border-radius: 25px;
             overflow: hidden;
@@ -133,7 +132,7 @@
             position: relative;
             height: 50px;
             width: 100%;
-            margin-top: 20px;
+            margin-top: 15px; /* Reduced from 20px */
         }
 
         .field input {
@@ -165,7 +164,7 @@
         .btn {
             height: 50px;
             width: 100%;
-            margin-top: 30px;
+            margin-top: 15px; /* Reduced from 20px */
             position: relative;
             overflow: hidden;
             border-radius: 10px;
@@ -173,12 +172,22 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .btn:hover {
+        .otp-btn {
+            background: #28a745;
+            margin-top: 10px; /* Kept as is since it's the first button after email */
+        }
+
+        .btn:hover, .otp-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 115, 230, 0.4);
         }
 
-        .btn input[type="submit"] {
+        .otp-btn:hover {
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+        }
+
+        .btn input[type="submit"],
+        .otp-btn input[type="button"] {
             height: 100%;
             width: 100%;
             background: none;
@@ -193,7 +202,7 @@
 
         .forgot {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 15px; /* Reduced from 20px */
         }
 
         .forgot a {
@@ -208,7 +217,6 @@
             text-decoration: underline;
         }
 
-        /* Responsive Design */
         @media (max-width: 400px) {
             .wrapper {
                 padding: 20px;
@@ -223,7 +231,8 @@
                 font-size: 14px;
             }
 
-            .btn input[type="submit"] {
+            .btn input[type="submit"],
+            .otp-btn input[type="button"] {
                 font-size: 16px;
             }
         }
@@ -259,6 +268,12 @@
                     <div class="field">
                         <input type="text" name="email" placeholder="Email" required aria-label="Email">
                     </div>
+                    <div class="btn otp-btn">
+                        <input type="button" value="Send OTP" id="send-otp-btn">
+                    </div>
+                    <div class="field">
+                        <input type="text" name="otp" placeholder="Enter OTP" aria-label="OTP">
+                    </div>
                     <div class="field">
                         <input type="text" name="fullname" placeholder="Full Name" required aria-label="Full Name">
                     </div>
@@ -282,6 +297,7 @@
         const signupBtn = document.querySelector("label.signup");
         const loginForm = document.querySelector("#login-form");
         const signupForm = document.querySelector("#signup-form");
+        const sendOtpBtn = document.querySelector("#send-otp-btn");
 
         // Function to update UI based on state
         function updateUI(isSignup) {
@@ -296,86 +312,46 @@
             }
         }
 
-        // // Event listeners for the slide controls
-        // loginBtn.addEventListener("click", () => updateUI(false));
-        // signupBtn.addEventListener("click", () => updateUI(true));
-
-        // // Handle login form submission
-        // loginForm.addEventListener("submit", async (e) => {
-        //     e.preventDefault();
-        //     const email = loginForm.email.value;
-        //     const password = loginForm.password.value;
-
-        //     try {
-        //         const response = await fetch("/login", {
-        //             method: "POST",
-        //             headers: {
-        //                 "Content-Type": "application/json"
-        //             },
-        //             body: JSON.stringify({ email, password })
-        //         });
-
-        //         const result = await response.json();
-        //         if (response.ok) {
-        //             alert(result.message);
-        //             // Redirect or perform further actions
-        //         } else {
-        //             alert(result.error);
-        //         }
-        //     } catch (error) {
-        //         alert("An error occurred: " + error.message);
-        //     }
-        // });
-
         // Event listeners for the slide controls
-            loginBtn.addEventListener("click", () => updateUI(false));
-            signupBtn.addEventListener("click", () => updateUI(true));
+        loginBtn.addEventListener("click", () => updateUI(false));
+        signupBtn.addEventListener("click", () => updateUI(true));
 
-            // Handle login form submission
-            loginForm.addEventListener("submit", async (e) => {
-                e.preventDefault();
-                const email = loginForm.email.value;
-                const password = loginForm.password.value;
-
-                try {
-                    const response = await fetch("/login", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({ email, password })
-                    });
-
-                    // Check if the response is a redirect
-                    if (response.redirected) {
-                        // Redirect to the new location
-                        window.location.href = response.url;
-                    } else {
-                        // Handle the JSON response
-                        const result = await response.json();
-                        if (response.ok) {
-                            alert(result.message);
-                            // Perform further actions if needed
-                        } else {
-                            alert(result.error);
-                        }
-                    }
-                } catch (error) {
-                    alert("An error occurred: " + error.message);
-                }
-            });
-
-
-        // Handle signup form submission
-        signupForm.addEventListener("submit", async (e) => {
+        // Handle login form submission
+        loginForm.addEventListener("submit", async (e) => {
             e.preventDefault();
-            const email = signupForm.email.value;
-            const fullname = signupForm.fullname.value;
-            const password = signupForm.password.value;
-            const confirmPassword = signupForm.confirmpassword.value;
+            const email = loginForm.email.value;
+            const password = loginForm.password.value;
 
-            if (password !== confirmPassword) {
-                alert("Passwords do not match!");
+            try {
+                const response = await fetch("/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                if (response.redirected) {
+                    window.location.href = response.url;
+                } else {
+                    const result = await response.json();
+                    if (response.ok) {
+                        alert(result.message);
+                    } else {
+                        alert(result.error);
+                    }
+                }
+            } catch (error) {
+                alert("An error occurred: " + error.message);
+            }
+        });
+
+        // Handle Send OTP button click
+        sendOtpBtn.addEventListener("click", async () => {
+            const email = signupForm.email.value;
+            
+            if (!email) {
+                alert("Please enter an email address first!");
                 return;
             }
 
@@ -385,13 +361,56 @@
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify({ email, fullname, password, confirmPassword })
+                    body: JSON.stringify({ email, action: "send_otp" })
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    alert(result.message); // "OTP sent successfully"
+                    sendOtpBtn.disabled = true;
+                    sendOtpBtn.style.opacity = "0.7";
+                } else {
+                    alert(result.error);
+                }
+            } catch (error) {
+                alert("An error occurred: " + error.message);
+            }
+        });
+
+        // Handle signup form submission
+        signupForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const email = signupForm.email.value;
+            const fullname = signupForm.fullname.value;
+            const password = signupForm.password.value;
+            const confirmPassword = signupForm.confirmpassword.value;
+            const otp = signupForm.otp.value;
+
+            if (password !== confirmPassword) {
+                alert("Passwords do not match!");
+                return;
+            }
+
+            if (!otp) {
+                alert("Please enter the OTP!");
+                return;
+            }
+
+            try {
+                const response = await fetch("/signup", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ email, fullname, password, confirmPassword, otp })
                 });
 
                 const result = await response.json();
                 if (response.ok) {
                     alert(result.message);
-                    // Proceed to OTP verification step
+                    signupForm.reset();
+                    sendOtpBtn.disabled = false;
+                    sendOtpBtn.style.opacity = "1";
                 } else {
                     alert(result.error);
                 }

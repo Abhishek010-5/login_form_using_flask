@@ -45,31 +45,37 @@ def signup():
     try:
         db = get_database()
         data = request.get_json()
+        action =  data.get("action")
+        otp =  data.get("otp")
         name = data.get("fullname")
         email = data.get("email")
         password = data.get("password")
         conf_password = data.get("confirmPassword")
-        otp = data.get("otp")
-
-        # Validation checks
-        if not email or not password or not conf_password or not otp:
-            return jsonify({"error": "Email, password, otp and confirmation password are required"}), 400
-
+        
+    
         if not validate_email(email):
             return jsonify({"error": "Invalid email address"}), 400
+
+        if validate_user_mail(email):
+            return jsonify({"error": "User already exists"}), 400
+        
+        if action == "send_otp":
+            gen_otp = generate_otp()
+            send_otp_to_db(email, gen_otp)
+            send_otp(email, gen_otp)
+            return jsonify({"message": "OTP sent successfully"})
+        
+        # Validation checks
+        if not email or not password or not conf_password:
+            return jsonify({"error": "Email, password, and confirmation password are required"}), 400
+
 
         if not validate_password(password):
             return jsonify({"error": "Invalid password"}), 400
 
         if password != conf_password:
             return jsonify({"error": "Passwords do not match"}), 400
-
-        if validate_user_mail(email):
-            return jsonify({"error": "User already exists"}), 400
-        gen_otp = get_database()
-        send_otp_to_db(email,gen_otp)
-        send_otp(email, gen_otp)
-        
+                
         if not verify_otp(email, otp):
             return jsonify({"error": "Invalid OTP"}), 400
 
@@ -78,10 +84,9 @@ def signup():
         db["users_details"].insert_one({"_id": email, "password": hashed_password, "user_name": name})
 
         return jsonify({"email": email, "message": "User registered successfully"}), 200
-
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
+    
 # Route for login
 @app.route("/login", methods=["POST"])
 def login():
@@ -161,6 +166,7 @@ def forget_password():
             reset_password(email, hashed_password)
 
             return jsonify({"message": "Password updated successfully"})
+        return  redirect(url_for("index"))
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500

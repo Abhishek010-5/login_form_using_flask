@@ -36,7 +36,6 @@ def send_otp(email, otp):
     except Exception as e:
         print(f"Failed to send email: {e}")
         
-
 def send_otp_to_db(email, otp):
     """
     Stores the OTP and its expiry time in the database.
