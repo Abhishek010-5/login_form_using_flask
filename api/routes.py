@@ -49,10 +49,11 @@ def signup():
         email = data.get("email")
         password = data.get("password")
         conf_password = data.get("confirmPassword")
+        otp = data.get("otp")
 
         # Validation checks
-        if not email or not password or not conf_password:
-            return jsonify({"error": "Email, password, and confirmation password are required"}), 400
+        if not email or not password or not conf_password or not otp:
+            return jsonify({"error": "Email, password, otp and confirmation password are required"}), 400
 
         if not validate_email(email):
             return jsonify({"error": "Invalid email address"}), 400
@@ -65,6 +66,12 @@ def signup():
 
         if validate_user_mail(email):
             return jsonify({"error": "User already exists"}), 400
+        gen_otp = get_database()
+        send_otp_to_db(email,gen_otp)
+        send_otp(email, gen_otp)
+        
+        if not verify_otp(email, otp):
+            return jsonify({"error": "Invalid OTP"}), 400
 
         hashed_password = hashlib.sha256(password.encode("utf-8")).hexdigest()
 
