@@ -17,6 +17,7 @@ def send_otp(email, otp):
     Sends the OTP via email using SMTP.
     """
     sender_email = MAIL
+    print(sender_email)
     sender_password = PASSWORD
     subject = "Your OTP Code"
     body = f"Your OTP code is {otp}. It is valid for 10 minutes."
